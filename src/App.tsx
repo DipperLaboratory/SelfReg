@@ -11,7 +11,7 @@ import {
     Theme,
     Typography
 } from '@material-ui/core';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import MuiAlert, {AlertProps} from '@material-ui/lab/Alert';
 import {Octokit} from "@octokit/rest";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,7 +30,7 @@ function App() {
 
     const [email, setEmail] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
-    const [errMsg, setErrMsg] = useState<string>('');
+    const [helperMsg, setHelperMsg] = useState<string>('请输入您的校园邮箱');
     const [showTip, setShowTip] = useState<boolean>(false);
     const [tipMsg, setTipMsg] = useState<string>('');
     const [pending, setPending] = useState<boolean>(false);
@@ -45,25 +45,32 @@ function App() {
         const value = event.target.value;
         setEmail(() => value);
         const err = !testRe.test(value);
-        if (err){
-            setErrMsg('请使用 @jgsu.edu.cn');
+        if (err) {
+            setHelperMsg('请使用 @jgsu.edu.cn');
+            setError(() => true);
         } else {
-            setErrMsg('');
+            if (value.split('@')[0].length === 10) {
+                setHelperMsg('格式正确');
+                setError(() => false)
+            } else {
+                setHelperMsg('学号应为10位')
+                setError(() => true)
+            }
         }
-        setError(() => err);
+
     }
 
     function submit(): void {
         if (!email) {
-            setErrMsg('请输入邮箱');
+            setHelperMsg('请输入邮箱');
             setError(true);
             return;
         }
         if (error) {
             return;
         }
-        if (email.split('@')[0].length!==10){
-            setErrMsg('请检查邮箱前缀');
+        if (email.split('@')[0].length !== 10) {
+            setHelperMsg('请检查邮箱前缀');
             setError(true);
             return;
         }
@@ -107,7 +114,7 @@ function App() {
                                    InputLabelProps={{
                                        shrink: true,
                                    }}
-                                   helperText={errMsg}
+                                   helperText={helperMsg}
                                    onChange={update}
                                    style={{width: "100%"}} className={classes.pd}/>
                         <Button variant="contained" disableElevation onClick={submit}>
