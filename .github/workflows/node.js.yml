@@ -14,5 +14,11 @@ jobs:
       with:
         node-version: 16.x
         cache: 'npm'
+    
     - run: yarn install
-    - run: yarn run deploy
+    
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
