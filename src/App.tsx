@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {
     Button,
@@ -34,6 +34,10 @@ function App() {
     const [showTip, setShowTip] = useState<boolean>(false);
     const [tipMsg, setTipMsg] = useState<string>('');
     const [pending, setPending] = useState<boolean>(false);
+
+    useEffect(() => {
+        setHelperMsg('请输入您的校园邮箱');
+    },[])
 
     const testRe = new RegExp('@jgsu.edu.cn$');
 
