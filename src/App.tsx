@@ -46,7 +46,7 @@ function App() {
     })
 
     function update(event: React.ChangeEvent<HTMLTextAreaElement>): void {
-        const value = event.target.value;
+        const value = event.target.value.toLowerCase();
         setEmail(() => value);
         const err = !testRe.test(value);
         if (err) {
